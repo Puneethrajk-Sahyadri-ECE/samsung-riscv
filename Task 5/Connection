@@ -1,0 +1,11 @@
+Here are the wiring connections for
+traffic control system using the 
+**VSD Squadron Mini** :
+
+1. HC-SR04 VCC → 5V (VSD Squadron Mini)  
+2. HC-SR04 GND → GND (VSD Squadron Mini)  
+3. HC-SR04 Trig → PC0 (VSD Squadron Mini)  
+4. HC-SR04 Echo → PC1 (VSD Squadron Mini)  
+5. Red LED (+) → PC2 (VSD Squadron Mini)  
+6. Green LED (+) → PC3 (VSD Squadron Mini)  
+7. LED GND (-) → GND (via 220Ω resistor)
