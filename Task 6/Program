@@ -1,0 +1,58 @@
+code:
+
+#include "ch32v003fun.h"
+#include <stdio.h>
+
+#define TRIG_PIN PC0  // Ultrasonic Trigger
+#define ECHO_PIN PC1  // Ultrasonic Echo
+#define RED_LED  PC2  // Red Traffic Light
+#define GREEN_LED PC3 // Green Traffic Light
+
+// Function to trigger ultrasonic sensor
+void trigger_ultrasonic() {
+    digitalWrite(TRIG_PIN, LOW);
+    delayMicroseconds(2);
+    digitalWrite(TRIG_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG_PIN, LOW);
+}
+
+// Function to get distance from HC-SR04
+int get_distance() {
+    long duration;
+    int distance;
+    
+    trigger_ultrasonic();
+    duration = pulseIn(ECHO_PIN, HIGH);
+    distance = duration * 0.034 / 2;  // Convert time to distance in cm
+    
+    return distance;
+}
+
+void setup() {
+    pinMode(TRIG_PIN, OUTPUT);
+    pinMode(ECHO_PIN, INPUT);
+    pinMode(RED_LED, OUTPUT);
+    pinMode(GREEN_LED, OUTPUT);
+    
+    Serial.begin(115200); // Debugging via Serial Monitor
+    printf("Traffic Light System Initialized...\n");
+}
+
+void loop() {
+    int distance = get_distance();
+    
+    printf("Distance: %d cm\n", distance); // Debugging output
+    
+    if (distance < 50) { // If car/person detected within 50 cm
+        digitalWrite(GREEN_LED, HIGH);
+        digitalWrite(RED_LED, LOW);
+        printf("Green Light: GO\n");
+    } else { // No car detected, keep red light ON
+        digitalWrite(GREEN_LED, LOW);
+        digitalWrite(RED_LED, HIGH);
+        printf("Red Light: STOP\n");
+    }
+    
+    delay(500); // Small delay for stability
+}
